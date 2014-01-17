@@ -4,13 +4,26 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
+
+    private String[] mNavTitles;
+    private ListView mDrawerList;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mNavTitles = getResources().getStringArray(R.array.nav_names);
+        mDrawerList = (ListView)findViewById(R.id.left_drawer);
+
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1));
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

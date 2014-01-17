@@ -5,4 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="nav_names">
+        <item>Binary to number</item>
+        <item>Binary to ASCII</item>
+    </string-array>
+
 </resources>
