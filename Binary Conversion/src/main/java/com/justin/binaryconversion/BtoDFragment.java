@@ -12,8 +12,8 @@ import android.widget.EditText;
 /**
  * Created by Justin on 1/10/14.
  */
-public class MainFragment extends Fragment {
-    public MainFragment() {
+public class BtoDFragment extends Fragment {
+    public BtoDFragment() {
 
     }
 

@@ -1,9 +1,15 @@
 package com.justin.binaryconversion;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -11,6 +17,7 @@ public class MainActivity extends ActionBarActivity {
 
     private String[] mNavTitles;
     private ListView mDrawerList;
+    private DrawerLayout mDrawerLayout;
 
 
 
@@ -22,16 +29,46 @@ public class MainActivity extends ActionBarActivity {
 
         mNavTitles = getResources().getStringArray(R.array.nav_names);
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1));
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mNavTitles ));
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectDrawerItem(i);
+            }
+        });
 
         if (savedInstanceState == null) {
+            /*
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new MainFragment())
+                    .add(R.id.container, new BtoDFragment())
                     .commit();
+            */
+            selectDrawerItem(0);
         }
     }
 
+    private void selectDrawerItem(int i) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment;
+
+        if (i == 0) {
+            fragment = new BtoDFragment();
+
+        }
+
+        else {
+            fragment = new Fragment();
+        }
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        mDrawerList.setItemChecked(i, true);
+        setTitle(mNavTitles[i]);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
