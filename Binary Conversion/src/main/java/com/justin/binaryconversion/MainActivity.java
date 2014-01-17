@@ -60,7 +60,9 @@ public class MainActivity extends ActionBarActivity {
             fragment = new BtoDFragment();
 
         }
-
+        else if (i == 1) {
+            fragment = new BtoHFragment();
+        }
         else {
             fragment = new Fragment();
         }

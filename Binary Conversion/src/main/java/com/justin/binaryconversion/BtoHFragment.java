@@ -11,10 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 /**
- * Created by Justin on 1/10/14.
+ * Created by Justin on 1/17/14.
  */
-public class BtoDFragment extends Fragment {
-    public BtoDFragment() {
+public class BtoHFragment extends Fragment {
+    public BtoHFragment() {
 
     }
 
@@ -22,21 +22,19 @@ public class BtoDFragment extends Fragment {
     private Button clearButton;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_btod, container, false);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle) {
+        View rootView = inflater.inflate(R.layout.fragment_btoh, container, false);
         inputTextEdit = (EditText)rootView.findViewById(R.id.input_editText);
         outputTextEdit = (EditText)rootView.findViewById(R.id.output_editText);
-        outputTextEdit.setEnabled(false);
         clearButton = (Button)rootView.findViewById(R.id.clear_button);
-
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 inputTextEdit.setText("");
             }
         });
+
+        outputTextEdit.setEnabled(false);
 
         inputTextEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,26 +53,11 @@ public class BtoDFragment extends Fragment {
             }
         });
 
-
         return rootView;
     }
 
     private void convertText() {
-        String input = new StringBuilder(inputTextEdit.getText().toString()).reverse().toString();
-        StringBuffer out = new StringBuffer();
-        long output = 0;
-        int n = input.length();
-        for (int i = 0; i < n; i++) {
-            char c = input.charAt(i);
-            if (c == '0') {
-                // nothing
-            } else if (c == '1') {
-                output += Math.pow(2, i);
-            } else {
-                outputTextEdit.setText("Parsing error.");
-                return;
-            }
-        }
-        outputTextEdit.setText(Long.toString(output));
+        String input = inputTextEdit.getText().toString();
     }
 }
+
