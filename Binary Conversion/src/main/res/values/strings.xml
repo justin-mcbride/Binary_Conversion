@@ -11,6 +11,9 @@
         <item>Binary to ASCII</item>
     </string-array>
 
+    <string name="binary">Binary:</string>
+    <string name="output">Output:</string>
+
     <string name="clear_button">Clear</string>
     <string name="convert_button">Convert</string>
 

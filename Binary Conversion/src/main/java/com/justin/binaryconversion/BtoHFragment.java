@@ -26,24 +26,28 @@ public class BtoHFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle) {
         View rootView = inflater.inflate(R.layout.fragment_btoh, container, false);
+
+        // Get the subviews
         inputTextEdit = (EditText)rootView.findViewById(R.id.input_editText);
         outputTextEdit = (EditText)rootView.findViewById(R.id.output_editText);
+        convertButton = (Button)rootView.findViewById(R.id.convert_button);
         clearButton = (Button)rootView.findViewById(R.id.clear_button);
+
+        // Setup the subviews
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 inputTextEdit.setText("");
+                outputTextEdit.setText("");
             }
         });
-        convertButton = (Button)rootView.findViewById(R.id.convert_button);
+
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 convertText();
             }
         });
-
-        outputTextEdit.setEnabled(false);
 
         return rootView;
     }

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Your binary: "
+            android:text="@string/binary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Output: "
+            android:text="@string/output"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -40,6 +40,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
     </LinearLayout>
+
+    <Space
+        android:layout_width="fill_parent"
+        android:layout_height="30dp" />
 
     <Button android:id="@+id/clear_button"
         android:text="@string/clear_button"
