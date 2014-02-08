@@ -12,5 +12,9 @@
     </string-array>
 
     <string name="clear_button">Clear</string>
+    <string name="convert_button">Convert</string>
+
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
 
 </resources>

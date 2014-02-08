@@ -1,6 +1,8 @@
 package com.justin.binaryconversion;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -16,11 +18,10 @@ import android.widget.ListView;
 public class MainActivity extends ActionBarActivity {
 
     private String[] mNavTitles;
+    private String mTitle;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
-
-
-
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +43,38 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.ic_drawer, R.string.open_drawer, R.string.close_drawer) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle(mTitle);
+            }
+
+            public void onDrawerOpened(View view) {
+                super.onDrawerOpened(view);
+                getActionBar().setTitle(R.string.app_name);
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
         if (savedInstanceState == null) {
-            /*
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new BtoDFragment())
-                    .commit();
-            */
             selectDrawerItem(0);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
     private void selectDrawerItem(int i) {
@@ -68,7 +93,8 @@ public class MainActivity extends ActionBarActivity {
         }
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         mDrawerList.setItemChecked(i, true);
-        setTitle(mNavTitles[i]);
+        mTitle = mNavTitles[i];
+        setTitle(mTitle);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -85,6 +111,11 @@ public class MainActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
