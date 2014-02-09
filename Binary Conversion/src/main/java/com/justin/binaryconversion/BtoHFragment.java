@@ -65,11 +65,18 @@ public class BtoHFragment extends Fragment {
         for (int i = 1; i < input.length() + 1; i++) {
 
             buffer.append(input.charAt(i-1));
-            Log.d("Loop", "i = " + i + ", buffer = " + buffer.toString());
+            //Log.d("Loop", "i = " + i + ", buffer = " + buffer.toString());
 
             if (i % 4 == 0 && i != 0) {
-                outputBuffer.append(toHex(buffer.toString()));
-                Log.d("Mof4", "outputBuffer = " + outputBuffer.toString());
+                char c;
+                try {
+                    c = toHex(buffer.toString());
+                } catch (MalformedInputException e) {
+                    outputTextEdit.setText(getString(R.string.parse_error) + e.getMessage());
+                    return;
+                }
+                outputBuffer.append(c);
+                //Log.d("Mof4", "outputBuffer = " + outputBuffer.toString());
                 buffer = new StringBuffer();
             }
 
@@ -77,7 +84,7 @@ public class BtoHFragment extends Fragment {
         outputTextEdit.setText(outputBuffer.toString());
     }
 
-    private char toHex(String s) {
+    private char toHex(String s) throws MalformedInputException {
         if (s.equals("0000")) return '0';
         else if (s.equals("0001")) return '1';
         else if (s.equals("0010")) return '2';
@@ -94,7 +101,15 @@ public class BtoHFragment extends Fragment {
         else if (s.equals("1101")) return 'd';
         else if (s.equals("1110")) return 'e';
         else if (s.equals("1111")) return 'f';
-        else return 'x';
+        else {
+            throw new MalformedInputException(s);
+        }
+    }
+
+    private class MalformedInputException extends Exception {
+        public MalformedInputException(String s) {
+            super(s);
+        }
     }
 }
 

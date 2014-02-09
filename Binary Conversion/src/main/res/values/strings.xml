@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Binary Conversion</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
     <string-array name="nav_names">
@@ -19,5 +18,7 @@
 
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
+
+    <string name="parse_error">Parse error in: </string>
 
 </resources>
