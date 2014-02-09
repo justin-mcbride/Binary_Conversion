@@ -1,12 +1,17 @@
 package com.justin.binaryconversion;
 
-import android.app.Fragment;
+
+import android.media.Image;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Switch;
 
 /**
  * Created by Justin on 2/8/14.
@@ -16,8 +21,11 @@ public class BtoAFragment extends Fragment {
 
     }
 
-    private Button convertButton, clearButton;
-    private EditText inputEditText, outputEditText;
+    private Button mConvertButton, mClearButton;
+    private ImageButton mCopyButton1, mCopyButton2;
+    private EditText mBinaryEditText, mASCIIEditText;
+    private Switch mReverseSwitch;
+    private boolean mSwitched = false;
 
 
     @Override
@@ -25,47 +33,80 @@ public class BtoAFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_btoa, container, false);
 
         // Get all the subviews
-        inputEditText = (EditText)rootView.findViewById(R.id.input_editText);
-        outputEditText = (EditText)rootView.findViewById(R.id.output_editText);
-        convertButton = (Button)rootView.findViewById(R.id.convert_button);
-        clearButton = (Button)rootView.findViewById(R.id.clear_button);
+        mBinaryEditText = (EditText)rootView.findViewById(R.id.binary_editText);
+        mASCIIEditText = (EditText)rootView.findViewById(R.id.ascii_editText);
+        mConvertButton = (Button)rootView.findViewById(R.id.convert_button);
+        mClearButton = (Button)rootView.findViewById(R.id.clear_button);
+        mReverseSwitch = (Switch)rootView.findViewById(R.id.reverse_switch);
+        mCopyButton1 = (ImageButton)rootView.findViewById(R.id.copyButton1);
+        mCopyButton2 = (ImageButton)rootView.findViewById(R.id.copyButton2);
 
         // Set up the subviews
-        convertButton.setOnClickListener(new View.OnClickListener() {
+        mConvertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                convertText();
+                if (!mSwitched) convertBinarytoASCII();
+                else convertASCIItoBinary();
             }
         });
-        clearButton.setOnClickListener(new View.OnClickListener() {
+        mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputEditText.setText("");
-                outputEditText.setText("");
+                mBinaryEditText.setText("");
+                mASCIIEditText.setText("");
+            }
+        });
+
+        mReverseSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    // is checked, wants Reversed
+                    mSwitched = true;
+                    mBinaryEditText.setEnabled(false);
+                    mASCIIEditText.setEnabled(true);
+                }
+                else {
+                    // isn't checked, wants normal
+                    mSwitched = false;
+                    mBinaryEditText.setEnabled(true);
+                    mASCIIEditText.setEnabled(false);
+                }
+            }
+        });
+
+        mCopyButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utilities.CopyTextToClipboard(mBinaryEditText.getText().toString(), getActivity());
+            }
+        });
+        mCopyButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utilities.CopyTextToClipboard(mASCIIEditText.getText().toString(), getActivity());
             }
         });
 
         return rootView;
     }
 
-    private void convertText() {
+    private void convertASCIItoBinary() {
+        byte[] bytes = mASCIIEditText.getText().toString().getBytes();
+        StringBuilder binary = new StringBuilder();
+
+        for (byte b : bytes) {
+            int val = b;
+            for (int i = 0; i < 8; i++) {
+                binary.append((val & 128) == 0 ? 0 : 1);
+                val <<= 1;
+            }
+            binary.append(' ');
+        }
+        mBinaryEditText.setText(binary);
+    }
+
+    private void convertBinarytoASCII() {
 
     }
 }
-
-/*
-String s = "foo";
-  byte[] bytes = s.getBytes();
-  StringBuilder binary = new StringBuilder();
-  for (byte b : bytes)
-  {
-     int val = b;
-     for (int i = 0; i < 8; i++)
-     {
-        binary.append((val & 128) == 0 ? 0 : 1);
-        val <<= 1;
-     }
-     binary.append(' ');
-  }
-  System.out.println("'" + s + "' to binary: " + binary);
- */

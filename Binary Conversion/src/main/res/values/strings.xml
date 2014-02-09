@@ -11,10 +11,13 @@
     </string-array>
 
     <string name="binary">Binary:</string>
+    <string name="ASCII">ASCII:</string>
+    <string name="hex">Hexadecimal:</string>
     <string name="output">Output:</string>
 
     <string name="clear_button">Clear</string>
     <string name="convert_button">Convert</string>
+    <string name="reverse">Reverse the operation</string>
 
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>

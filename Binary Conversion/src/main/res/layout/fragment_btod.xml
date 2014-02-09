@@ -24,6 +24,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
+
+        <ImageButton android:src="@drawable/ic_action_copy"
+            android:id="@+id/copyButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         </LinearLayout>
 
     <LinearLayout
@@ -40,6 +46,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
+
+        <ImageButton android:src="@drawable/ic_action_copy"
+            android:id="@+id/copyButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <Space

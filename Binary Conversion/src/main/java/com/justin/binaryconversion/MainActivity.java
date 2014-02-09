@@ -89,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
             fragment = new BtoHFragment();
         }
         else {
-            fragment = new Fragment();
+            fragment = new BtoAFragment();
         }
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         mDrawerList.setItemChecked(i, true);
