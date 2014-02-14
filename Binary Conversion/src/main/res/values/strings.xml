@@ -13,7 +13,7 @@
     <string name="binary">Binary:</string>
     <string name="ASCII">ASCII:</string>
     <string name="hex">Hexadecimal:</string>
-    <string name="output">Output:</string>
+    <string name="decimal">Decimal:</string>
 
     <string name="clear_button">Clear</string>
     <string name="convert_button">Convert</string>
@@ -23,5 +23,6 @@
     <string name="close_drawer">Close drawer</string>
 
     <string name="parse_error">Parse error in: </string>
+    <string name="parse_long_error">Error parsing the number</string>
 
 </resources>

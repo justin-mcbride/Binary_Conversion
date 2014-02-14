@@ -2,14 +2,14 @@ package com.justin.binaryconversion;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 /**
  * Created by Justin on 1/10/14.
@@ -19,9 +19,12 @@ public class BtoDFragment extends Fragment {
 
     }
 
-    private EditText inputTextEdit, outputTextEdit;
-    private Button clearButton;
+    private EditText mBinaryEditText, mDecimalEditText;
+    private Button mClearButton, mConvertButton;
+    private Switch mReverseSwitch;
     private ImageButton mCopyButton1, mCopyButton2;
+
+    private boolean mSwitched = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,42 +32,51 @@ public class BtoDFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_btod, container, false);
 
         // Get all the subviews
-        inputTextEdit = (EditText)rootView.findViewById(R.id.input_editText);
-        outputTextEdit = (EditText)rootView.findViewById(R.id.output_editText);
-        clearButton = (Button)rootView.findViewById(R.id.clear_button);
+        mBinaryEditText = (EditText)rootView.findViewById(R.id.input_editText);
+        mDecimalEditText = (EditText)rootView.findViewById(R.id.output_editText);
+        mClearButton = (Button)rootView.findViewById(R.id.clear_button);
         mCopyButton1 = (ImageButton)rootView.findViewById(R.id.copyButton1);
         mCopyButton2 = (ImageButton)rootView.findViewById(R.id.copyButton2);
+        mReverseSwitch = (Switch)rootView.findViewById(R.id.reverse_switch);
+        mConvertButton = (Button)rootView.findViewById(R.id.convert_button);
 
         // Setup the subviews
-        clearButton.setOnClickListener(new View.OnClickListener() {
+        mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputTextEdit.setText("");
+                mBinaryEditText.setText("");
+                mDecimalEditText.setText("");
             }
         });
-        outputTextEdit.setEnabled(false);
-        inputTextEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
+        mReverseSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!b) {
+                    mSwitched = false;
+                    mBinaryEditText.setEnabled(true);
+                    mDecimalEditText.setEnabled(false);
+                }
+                else {
+                    mSwitched = true;
+                    mBinaryEditText.setEnabled(false);
+                    mDecimalEditText.setEnabled(true);
+                }
             }
-
+        });
+        mConvertButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                convertText();
+            public void onClick(View view) {
+                if (!mSwitched) binaryToDecimal();
+                else decimalToBinary();
             }
         });
 
         return rootView;
     }
 
-    private void convertText() {
-        String input = new StringBuilder(inputTextEdit.getText().toString()).reverse().toString();
+    private void binaryToDecimal() {
+        String input = new StringBuilder(mBinaryEditText.getText().toString()).reverse().toString();
         StringBuffer out = new StringBuffer();
         long output = 0;
         int n = input.length();
@@ -75,10 +87,29 @@ public class BtoDFragment extends Fragment {
             } else if (c == '1') {
                 output += Math.pow(2, i);
             } else {
-                outputTextEdit.setText("Parsing error.");
+                mDecimalEditText.setText("Parsing error.");
                 return;
             }
         }
-        outputTextEdit.setText(Long.toString(output));
+        mDecimalEditText.setText(Long.toString(output));
+    }
+
+    private void decimalToBinary() {
+        String input = mDecimalEditText.getText().toString();
+        long n;
+        try {
+            n = Long.parseLong(input);
+        } catch (Exception e) {
+            mBinaryEditText.setText(getString(R.string.parse_error));
+            return;
+        }
+        int largestExp = 0;
+        for (int i = 0; i < 20; i++) {
+            if (n > Math.pow(2, i)) continue;
+            else {
+                largestExp = i - 1;
+                break;
+            }
+        }
     }
 }
